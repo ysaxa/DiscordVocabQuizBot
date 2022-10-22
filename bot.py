@@ -1,6 +1,7 @@
 import os
 import json
 import discord # type: ignore
+import asyncio
 from threading import RLock
 from random import sample, shuffle, choice
 from dotenv import load_dotenv
@@ -50,7 +51,7 @@ scores: Scores = Scores()
 # View with buttons
 class Question(discord.ui.View):
 	def __init__(self):
-		super().__init__(timeout=3600.0)
+		super().__init__(timeout=7200.0)
 
 		pick: list[str] = sample([*words.keys()], 4)
 		answers: list[str] = [words[key] for key in pick]
@@ -87,7 +88,7 @@ class Question(discord.ui.View):
 			return callback
 
 		for answer in answers:
-			button: discord.ui.Button = discord.ui.Button(label=answer)
+			button: discord.ui.Button = discord.ui.Button(label=answer, style=discord.ButtonStyle.blurple)
 			button.callback = getCallback(answer)
 			self.add_item(button)
 
@@ -103,8 +104,18 @@ class MyClient(discord.Client):
 		if message.author.id == self.user.id: return
 
 		if True: # choice(range(5)) == 0:
+			# send the question
 			question = Question()
-			await self.channel.send(question.question, view=question)
+			msg: discord.Message = await self.channel.send(question.question, view=question)
+
+			# disable the buttons after a certain time
+			await asyncio.sleep(3600)
+			for item in question.children:
+				if isinstance(item, discord.ui.Button):
+					item.style = discord.ButtonStyle.grey
+					item.disabled = True
+			await msg.edit(view=question)
+			question.stop()
 
 intents = discord.Intents.default()
 
