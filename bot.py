@@ -27,7 +27,7 @@ class Scores:
 		self.scorepath: str = "scores.json"
 		self.scoresLock: RLock = RLock()
 
-	def add(self, userIdInt: int, points: int):
+	def add(self, userIdInt: int, points: int) -> int:
 		userId: str = str(userIdInt)
 
 		with self.scoresLock:
@@ -36,6 +36,7 @@ class Scores:
 			data[userId] = score + points
 			with open(self.scorepath, mode="w", encoding="utf-8") as f:
 				json.dump(data, f)
+			return data[userId]
 
 	def readData(self) -> dict:
 		if os.path.exists(self.scorepath):
@@ -78,10 +79,13 @@ class Question(discord.ui.View):
 					await interaction.response.send_message(f'Tu as déjà répondu.', ephemeral=True)
 				elif localAnswer == self.realAnswer:
 					points: int = max(0, 5-userTries)
-					scores.add(userId, points)
+					total:int = scores.add(userId, points)
 					with triesLock:
 						tries[userId] = 100 # magic
-					await interaction.response.send_message(f"Bonne réponse ! Tu gagnes {points} points pour avoir trouvé en {userTries} essai{'s' if userTries > 1 else ''}.", ephemeral=True)
+					await interaction.response.send_message('\n'.join([
+						f"Bonne réponse ! Tu gagnes {points} points pour avoir trouvé en {userTries} essai{'s' if userTries > 1 else ''}.",
+						f"Total des points: {total}",
+					]), ephemeral=True)
 				else:
 					await interaction.response.send_message(f"Mauvaise réponse 🤔 (essai {userTries}).", ephemeral=True)
 
