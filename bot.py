@@ -52,7 +52,8 @@ scores: Scores = Scores()
 # View with buttons
 class Question(discord.ui.View):
 	def __init__(self):
-		super().__init__(timeout=7200.0)
+		super().__init__(timeout=8.0)
+		self.msg: discord.Message
 
 		pick: list[str] = sample([*words.keys()], 4)
 		answers: list[str] = [words[key] for key in pick]
@@ -96,6 +97,13 @@ class Question(discord.ui.View):
 			button.callback = getCallback(answer)
 			self.add_item(button)
 
+	async def on_timeout(self):
+		for item in self.children:
+			if isinstance(item, discord.ui.Button):
+				item.style = discord.ButtonStyle.grey
+				item.disabled = True
+		await self.msg.edit(view=self)
+
 class MyClient(discord.Client):
 	async def on_ready(self):
 		print(f'Logged on as {self.user} ({self.user.id})')
@@ -108,18 +116,9 @@ class MyClient(discord.Client):
 		if message.author.id == self.user.id: return
 
 		if True: # choice(range(5)) == 0:
-			# send the question
 			question = Question()
 			msg: discord.Message = await self.channel.send(question.question, view=question)
-
-			# disable the buttons after a certain time
-			await asyncio.sleep(3600)
-			for item in question.children:
-				if isinstance(item, discord.ui.Button):
-					item.style = discord.ButtonStyle.grey
-					item.disabled = True
-			await msg.edit(view=question)
-			question.stop()
+			question.msg = msg
 
 intents = discord.Intents.default()
 
