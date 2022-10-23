@@ -52,7 +52,7 @@ scores: Scores = Scores()
 # View with buttons
 class Question(discord.ui.View):
 	def __init__(self):
-		super().__init__(timeout=8.0)
+		super().__init__(timeout=3600.0)
 		self.msg: discord.Message
 
 		pick: list[str] = sample([*words.keys()], 4)
@@ -110,15 +110,22 @@ class MyClient(discord.Client):
 		self.channel = discord.utils.get(self.get_all_channels(), id=CHANNELID)
 		print(f'Will send questions in channel {self.channel.name}')
 
+		while True:
+			await asyncio.sleep(600)
+			await self.sendQuestion()
+
 	async def on_message(self, message: discord.Message):
 		assert message.author is not None
 		assert self.user is not None
 		if message.author.id == self.user.id: return
 
 		if True: # choice(range(5)) == 0:
-			question = Question()
-			msg: discord.Message = await self.channel.send(question.question, view=question)
-			question.msg = msg
+			await self.sendQuestion()
+
+	async def sendQuestion(self):
+		question = Question()
+		msg: discord.Message = await self.channel.send(question.question, view=question)
+		question.msg = msg
 
 intents = discord.Intents.default()
 
