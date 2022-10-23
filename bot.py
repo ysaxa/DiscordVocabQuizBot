@@ -125,6 +125,7 @@ class MyClient(discord.Client):
 	async def sendQuestion(self):
 		question = Question()
 		msg: discord.Message = await self.channel.send(question.question, view=question)
+		await msg.add_reaction('✅')
 		question.msg = msg
 
 intents = discord.Intents.default()
