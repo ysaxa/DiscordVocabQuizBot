@@ -24,7 +24,7 @@ with open('words.json', encoding="utf-8") as f:
 # stupid json file for now
 class Scores:
 	def __init__(self):
-		self.scorepath: str = "scores.json"
+		self.scorepath: str = "appdata/scores.json"
 		self.scoresLock: RLock = RLock()
 
 	def add(self, userIdInt: int, points: int) -> int:
