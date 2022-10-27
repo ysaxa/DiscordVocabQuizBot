@@ -100,5 +100,20 @@
 	"영화":"le cinéma/un film",
 	"화장실":"toilettes",
 	"동생":"petit frère/petite sœur",
+
+	"나라":"pays",
+	"한국":"Corée du Sud",
+	"프랑스":"France",
+	"브라질":"Brésil",
+	"케냐":"Kenya",
+	"호주":"Australie",
+	"베트남":"Vietnam",
+	"이탈리아":"Italie",
+	"영국":"Royaume-Uni",
+	"러시아":"Russie",
+	"독일":"Allemagne",
+	"태국":"Thaïlande",
+	"인도":"Inde",
+	"중국":"Chine",
 	"":""
 }
