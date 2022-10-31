@@ -21,6 +21,10 @@ with open('words.json', encoding="utf-8") as f:
 	words: dict = json.load(f)
 	del words[""]
 
+with open('questionsAndAnswers.json', encoding="utf-8") as f:
+	questionsAndAnswers: dict = json.load(f)
+	del questionsAndAnswers[""]
+
 # stupid json file for now
 class Scores:
 	def __init__(self):
@@ -55,11 +59,23 @@ class Question(discord.ui.View):
 		super().__init__(timeout=3600.0)
 		self.msg: discord.Message
 
-		pick: list[str] = sample([*words.keys()], 4)
-		answers: list[str] = [words[key] for key in pick]
-		if choice([True, False]):
-			pick, answers = answers, pick
-		self.question = pick[0]
+		def simpleVocabulary():
+			pick: list[str] = sample([*words.keys()], 4)
+			answers: list[str] = [words[key] for key in pick]
+			if choice([True, False]):
+				pick, answers = answers, pick
+			return "Traduction de vocabulaire simple", pick[0], answers, 0x00FF00
+
+		def coherentAnswer():
+			pick: list[str] = sample([*questionsAndAnswers.keys()], 4)
+			answers: list[str] = [questionsAndAnswers[key] for key in pick]
+			return "Trouver la réponse cohérente", pick[0], answers, 0x0000FF
+
+		title, question, answers, color = choice([
+			simpleVocabulary,
+			coherentAnswer,
+		])()
+		self.embed = discord.Embed(title=title, description=question, color=color)
 		self.realAnswer: str = answers[0]
 		shuffle(answers)
 
@@ -124,7 +140,7 @@ class MyClient(discord.Client):
 
 	async def sendQuestion(self):
 		question = Question()
-		msg: discord.Message = await self.channel.send(question.question, view=question)
+		msg: discord.Message = await self.channel.send(embed=question.embed, view=question)
 		await msg.add_reaction('✅')
 		question.msg = msg
 

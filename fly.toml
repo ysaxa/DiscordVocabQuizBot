@@ -1,0 +1,12 @@
+# fly.toml file generated for korean-quiz-bot on 2022-10-24T22:45:01+02:00
+
+app = "korean-quiz-bot"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+
+[mounts]
+  destination = "/appdata"
+  source = "appdata"

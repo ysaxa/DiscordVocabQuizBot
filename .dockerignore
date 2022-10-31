@@ -1,0 +1,6 @@
+# flyctl launch added from .gitignore
+**\scores.json
+
+# flyctl launch added from .mypy_cache\.gitignore
+# Automatically created by mypy
+.mypy_cache\**\*
