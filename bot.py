@@ -111,10 +111,10 @@ class MyClient(discord.Client):
 		print(f'Will send questions in channel {self.channel.name}')
 
 		while True:
-			await asyncio.sleep(600)
 			await self.sendQuestion()
+			await asyncio.sleep(600)
 
-	async def on_message(self, message: discord.Message):
+	async def on_message_DISABLED(self, message: discord.Message):
 		assert message.author is not None
 		assert self.user is not None
 		if message.author.id == self.user.id: return
