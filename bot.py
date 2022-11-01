@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import discord # type: ignore
 import asyncio
@@ -26,8 +27,13 @@ with open('words.json', encoding="utf-8") as f:
 	del words[""]
 
 with open('questionsAndAnswers.json', encoding="utf-8") as f:
-	questionsAndAnswers: dict = json.load(f)
+	questionsAndAnswersBase: dict = json.load(f)
+	questionsAndAnswers: dict = questionsAndAnswersBase["questions"]
+	assert questionsAndAnswers is not None
 	del questionsAndAnswers[""]
+	substitutions: dict = questionsAndAnswersBase["substitutions"]
+	assert substitutions is not None
+	del substitutions[""]
 
 # stupid json file for now
 class Scores:
@@ -72,8 +78,49 @@ class Question(discord.ui.View):
 
 		def coherentAnswer():
 			pick: list[str] = sample([*questionsAndAnswers.keys()], 4)
+			prompt: str = pick[0]
 			answers: list[str] = [questionsAndAnswers[key] for key in pick]
-			return "Trouver la réponse cohérente", pick[0], answers, 0x0000FF
+
+			def substitute(strings: list[str]):
+				variableDict: dict = {
+					key: list(set(re.findall(f"{{{key}[0-9]*}}", ''.join(strings))))
+					for key in substitutions.keys()
+				}
+
+				#print(f"substitutions for {','.join(strings)}")
+				#print(json.dumps(variableDict, sort_keys=True, indent=4))
+
+				for key, variables in variableDict.items():
+					if len(variables) == 0: continue
+					subs: list[str] = sample(substitutions[key], len(variables))
+					for i,_ in enumerate(strings):
+						for j,__ in enumerate(subs):
+							strings[i] = strings[i].replace(variables[j], subs[j])
+
+				# replace {이에요} with 예요/이에요 according to rule
+				def replace이에요(s:str):
+					occurrences: list[str] = re.findall(f'.{{이에요}}', s)
+					for occurrence in occurrences:
+						print(occurrence)
+						ch = occurrence[0]
+						chOrd = ord(ch)
+						if not (44032 <= chOrd <= 55203): s.replace(occurrence, f'{ch}이에요') # this should never happen
+						if (chOrd-44032)%28 == 0: # no final
+							s = s.replace(occurrence, f'{ch}예요')
+						else:
+							s = s.replace(occurrence, f'{ch}이에요')
+
+					return s
+
+				return [replace이에요(s) for s in strings]
+
+			# substitute in question and real_answer with variable coherency
+			prompt, answers[0] = substitute([prompt, answers[0]])
+
+			# substitute in every answers without necessarily variable coherency (real_answer is already substituted so nothing will be done)
+			answers = [substitute([answer])[0] for answer in answers]
+
+			return "Trouver la réponse cohérente", prompt, answers, 0x0000FF
 
 		title, question, answers, color = choice([
 			simpleVocabulary,
