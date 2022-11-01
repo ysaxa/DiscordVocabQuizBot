@@ -133,5 +133,19 @@
 	"개나다":"Canada",
 	"스페인":"Espagne",
 
+	"직업":"profession",
+	"축구":"football",
+	"경찰":"policier",
+	"영화배우":"acteur de cinéma",
+	"운동선수":"sportif",
+	"요리사":"cuisinier",
+	"회사원":"employé d'entreprise",
+	"학생":"étudiant",
+	"대학생":"étudiant universitaire",
+	"친구":"ami",
+	"관겨":"relation",
+	"글럼":"dans ce cas",
+	"맞아요":"c'est juste",
+
 	"":""
 }
