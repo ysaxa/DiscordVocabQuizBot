@@ -17,6 +17,10 @@ temp = os.getenv("CHANNEL")
 assert temp is not None
 CHANNELID: int = int(temp)
 
+temp = os.getenv("QUESTION_DELAY_IN_SECONDS")
+assert temp is not None
+QUESTION_DELAY_IN_SECONDS: int = int(temp)
+
 with open('words.json', encoding="utf-8") as f:
 	words: dict = json.load(f)
 	del words[""]
@@ -128,7 +132,7 @@ class MyClient(discord.Client):
 
 		while True:
 			await self.sendQuestion()
-			await asyncio.sleep(600)
+			await asyncio.sleep(QUESTION_DELAY_IN_SECONDS)
 
 	async def on_message_DISABLED(self, message: discord.Message):
 		assert message.author is not None
