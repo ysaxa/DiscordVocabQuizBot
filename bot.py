@@ -123,8 +123,8 @@ class Question(discord.ui.View):
 			return "Trouver la réponse cohérente", prompt, answers, 0x0000FF
 
 		title, question, answers, color = choice([
-			simpleVocabulary,
-			coherentAnswer,
+			*[simpleVocabulary]*len(words),
+			*[coherentAnswer]*len(questionsAndAnswers),
 		])()
 		self.embed = discord.Embed(title=title, description=question, color=color)
 		self.realAnswer: str = answers[0]
