@@ -161,5 +161,26 @@
 
 	"변호사":"avocat",
 
+	"가다":"aller",
+	"오다":"venir",
+	"만나다":"rencontrer",
+	"자다":"dormir",
+	"사다":"acheter",
+	"보다":"regarder",
+	"먹다":"manger",
+	"마시다":"boire",
+	"배우다":"apprendre",
+	"읽다":"lire",
+	"쉬다":"se reposer",
+	"하다":"faire",
+	"운동하다":"faire du sport",
+	"일하다":"travailler (au boulot)",
+	"공부하다":"étudier",
+	"전화하다":"téléphoner",
+	"이야기하다":"parler/discuter/raconter",
+
+	"지금":"maintenant",
+	"오늘":"aujourd'hui",
+
 	"":""
 }
