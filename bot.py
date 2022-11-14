@@ -4,7 +4,7 @@ import json
 import discord # type: ignore
 import asyncio
 from threading import RLock
-from random import sample, shuffle, choice
+from random import sample, shuffle, choice, choices
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -23,8 +23,7 @@ assert temp is not None
 QUESTION_DELAY_IN_SECONDS: int = int(temp)
 
 with open('words.json', encoding="utf-8") as f:
-	words: dict = json.load(f)
-	del words[""]
+	words: list[dict] = json.load(f)
 
 with open('questionsAndAnswers.json', encoding="utf-8") as f:
 	questionsAndAnswersBase: dict = json.load(f)
@@ -70,8 +69,10 @@ class Question(discord.ui.View):
 		self.msg: discord.Message
 
 		def simpleVocabulary():
-			pick: list[str] = sample([*words.keys()], 4)
-			answers: list[str] = [words[key] for key in pick]
+			wordgroup: dict = choices(words, weights=[i+1 for i in range(len(words))])[0]
+			if "" in wordgroup: del wordgroup[""]
+			pick: list[str] = sample([*wordgroup.keys()], 4)
+			answers: list[str] = [wordgroup[key] for key in pick]
 			if choice([True, False]):
 				pick, answers = answers, pick
 			return "Traduction de vocabulaire simple", pick[0], answers, 0x00FF00
@@ -123,7 +124,7 @@ class Question(discord.ui.View):
 			return "Trouver la réponse cohérente", prompt, answers, 0x0000FF
 
 		title, question, answers, color = choice([
-			*[simpleVocabulary]*len(words),
+			*[simpleVocabulary]*sum([len(d) for d in words]),
 			*[coherentAnswer]*len(questionsAndAnswers),
 		])()
 		self.embed = discord.Embed(title=title, description=question, color=color)

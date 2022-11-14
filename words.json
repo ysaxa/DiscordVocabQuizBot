@@ -1,4 +1,4 @@
-{
+[{
 	"아이":"enfant",
 	"오이":"concombre",
 	"우유":"lait",
@@ -100,7 +100,8 @@
 	"영화":"le cinéma/un film",
 	"화장실":"toilettes",
 	"동생":"petit frère/petite sœur",
-
+	"":""
+}, {
 	"나라":"pays",
 	"한국":"Corée du Sud",
 	"프랑스":"France",
@@ -132,7 +133,8 @@
 	"모자":"chapeau",
 	"개나다":"Canada",
 	"스페인":"Espagne",
-
+	"":""
+}, {
 	"직업":"profession",
 	"축구":"football",
 	"경찰":"policier",
@@ -160,7 +162,8 @@
 	"책":"livre",
 
 	"변호사":"avocat",
-
+	"":""
+}, {
 	"가다":"aller",
 	"오다":"venir",
 	"만나다":"rencontrer",
@@ -193,6 +196,5 @@
 	"장소":"lieu",
 	"커피숍 / 카페":"café (lieu)",
 	"아파트":"appartement",
-
 	"":""
-}
+}]
