@@ -182,5 +182,17 @@
 	"지금":"maintenant",
 	"오늘":"aujourd'hui",
 
+	"한국문화원":"Centre culturel coréen",
+	"식당":"restaurant",
+	"세종학당":"Institut King Sejong",
+	"옷 가게":"boutique de vêtements",
+	"꽃 가게":"boutique de fleurs",
+	"신발 가게":"boutique de chaussures",
+	"과일 가게":"boutique de fruits",
+	"사무실":"bureau (lieu de travail)",
+	"장소":"lieu",
+	"커피숍 / 카페":"café (lieu)",
+	"아파트":"appartement",
+
 	"":""
 }
