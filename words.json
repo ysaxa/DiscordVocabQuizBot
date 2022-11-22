@@ -197,4 +197,26 @@
 	"커피숍 / 카페":"café (lieu)",
 	"아파트":"appartement",
 	"":""
+}, {
+	"아침":"matin",
+	"저녁":"soir",
+	"식사":"repas",
+	"오랜만이에요":"ça fait longtemps",
+	"호텔":"hotel",
+	"결혼하다":"se marier",
+	"고등학교":"lycée",
+	"회의":"réunion (travail)",
+	"헬스클럽":"salle de gym",
+	"생일":"anniversaire",
+	"파티":"soirée (fête)",
+	"지금":"maintenant",
+	"오늘":"aujourd'hui",
+	"내일":"demain",
+	"어제":"hier",
+	"주말":"week-end",
+	"공원":"parc",
+	"놀이공원":"parc d'attractions",
+	"수퍼마켓":"super marché",
+
+	"":""
 }]
