@@ -178,6 +178,8 @@ class MyClient(discord.Client):
 		self.channel = discord.utils.get(self.get_all_channels(), id=CHANNELID)
 		print(f'Will send questions in channel {self.channel.name}')
 
+		await self.channel.send("⚠ Bot redéployé, les questions précédentes sont invalides.")
+
 		while True:
 			await self.sendQuestion()
 			await asyncio.sleep(QUESTION_DELAY_IN_SECONDS)
