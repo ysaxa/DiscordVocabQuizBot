@@ -4,7 +4,7 @@ import json
 import discord # type: ignore
 import asyncio
 from threading import RLock
-from random import sample, shuffle, choice, choices
+from random import sample, shuffle, choice, choices, randint
 from dotenv import load_dotenv
 from datetime import datetime
 
@@ -77,6 +77,24 @@ class Question(discord.ui.View):
 				pick, answers = answers, pick
 			return "Traduction de vocabulaire simple", pick[0], answers, 0x00FF00
 
+		def numbers():
+			values: list[int] = [randint(0,9) for i in range(8)]
+			values.insert(0, randint(6,7))
+			values.insert(0, 0)
+			sinokorean: str = "공일이삼사오육칠팔구십"
+			answer: list[str] = [sinokorean[i] for i in values]
+
+			index: int = randint(2,10)
+			replacements: list[int] = sample([c for c in sinokorean if c != answer[index]], 3)
+
+			answers = [answer.copy(), answer.copy(), answer.copy()]
+			for i in range(len(answers)):
+				answers[i][index] = replacements[i]
+
+			answers.insert(0, answer)
+
+			return "Traduction de numéro de téléphone", ''.join([str(i) for i in values]), [''.join(a) for a in answers], 0xFFFF00
+
 		def coherentAnswer():
 			pick: list[str] = sample([*questionsAndAnswers.keys()], 4)
 			prompt: str = pick[0]
@@ -126,6 +144,7 @@ class Question(discord.ui.View):
 		title, question, answers, color = choice([
 			*[simpleVocabulary]*sum([len(d) for d in words]),
 			*[coherentAnswer]*len(questionsAndAnswers),
+			*[numbers]*10,
 		])()
 		self.embed = discord.Embed(title=title, description=question, color=color)
 		self.realAnswer: str = answers[0]
@@ -181,8 +200,11 @@ class MyClient(discord.Client):
 		await self.channel.send("⚠ Bot redéployé, les questions précédentes sont invalides.")
 
 		while True:
-			await self.sendQuestion()
-			await asyncio.sleep(QUESTION_DELAY_IN_SECONDS)
+			try:
+				await self.sendQuestion()
+				await asyncio.sleep(QUESTION_DELAY_IN_SECONDS)
+			except:
+				pass
 
 	async def on_message_DISABLED(self, message: discord.Message):
 		assert message.author is not None
