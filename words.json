@@ -238,4 +238,33 @@
 	"년":"année",
 
 	"":""
+}, {
+	"침대":"lit",
+	"의자":"chaise",
+	"책상":"bureau (meuble)",
+	"컴퓨터":"ordinateur",
+	"소파":"sofa",
+	"탁자":"table basse",
+	"텔레비전":"télévision",
+	"식닥":"table à manger",
+	"냉장고":"frigo",
+
+	"방":"chambre",
+	"거실":"salle de séjour",
+	"화장실":"toilettes",
+	"욕실":"salle de bains",
+	"부억":"cuisine (salle)",
+
+	"앞":"devant",
+	"뒤":"derrière",
+	"옆":"à côté",
+	"위":"sur / au dessus",
+	"아래 / 밑":"sous",
+	"안":"dans",
+	"밖":"à l'extérieur",
+
+	"휴대폰":"téléphone portable",
+	"안경":"lunettes",
+
+	"":""
 }]
