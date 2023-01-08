@@ -266,5 +266,21 @@
 	"휴대폰":"téléphone portable",
 	"안경":"lunettes",
 
+	"노트북":"ordinateur portable",
+	"유에스비":"clé USB",
+
+	"서랍":"tiroir",
+
+	"":""
+}, {
+	"딸기":"fraise",
+	"짓솔":"brosse à dents",
+	"치약":"dentifrice",
+	"비누":"savon",
+	"수건":"serviette",
+	"햄버거":"hamburger",
+
+	"하고":"et (entre deux noms)",
+
 	"":""
 }]
