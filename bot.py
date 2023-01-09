@@ -197,7 +197,7 @@ class MyClient(discord.Client):
 		self.channel = discord.utils.get(self.get_all_channels(), id=CHANNELID)
 		print(f'Will send questions in channel {self.channel.name}')
 
-		await self.channel.send("⚠ Bot redéployé, les questions précédentes sont invalides.")
+		await self.channel.send(embed=discord.Embed(title="ATTENTION", description="⚠ Bot redéployé, les questions précédentes sont invalides.", color=0xFF0000))
 
 		while True:
 			try:
