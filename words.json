@@ -282,5 +282,45 @@
 
 	"하고":"et (entre deux noms)",
 
+	"혼자":"seul",
+
+	"근처":"près",
+	"여권":"passeport",
+	"바다":"mer",
+	"손수건":"mouchoir en tissu",
+
+	"":""
+},{
+	"하나 / 한":"1 (natif)",
+	"둘 / 두":"2 (natif)",
+	"셋 / 세":"3 (natif)",
+	"넷 / 네":"4 (natif)",
+	"다섯":"5 (natif)",
+	"여섯":"6 (natif)",
+	"일곱":"7 (natif)",
+	"여덟":"8 (natif)",
+	"아홉":"9 (natif)",
+	"열":"10 (natif)",
+	"스물 / 스무":"20 (natif)",
+	"서른":"30 (natif)",
+	"마흔":"40 (natif)",
+	"쉰":"50 (natif)",
+	"예순":"60 (natif)",
+	"일흔":"70 (natif)",
+	"여든":"80 (natif)",
+	"아흔":"90 (natif)",
+
+	"병":"classificateur pour les bouteilles",
+	"잔":"classificateur pour les verres",
+	"장":"classificateur pour le papier (tickets, billets)",
+	"권":"classificateur pour les livres/cahiers",
+	"개":"classificateur général",
+	"명":"classificateur pour les personnes",
+	"마리":"classificateur pour les animaux",
+	"살":"classificateur pour l'âge",
+
+	"모두":"au total",
+	"몇":"COMBIEN?",
+
 	"":""
 }]
