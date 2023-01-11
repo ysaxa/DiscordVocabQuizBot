@@ -318,9 +318,24 @@
 	"명":"classificateur pour les personnes",
 	"마리":"classificateur pour les animaux",
 	"살":"classificateur pour l'âge",
+	"송이":"classificateur pour les fleurs",
+	"결레":"classificateur pour les chaussures",
 
 	"모두":"au total",
 	"몇":"COMBIEN?",
+
+	"나이":"âge",
+	"_이/가 어떻게 되세요 ?":"quel est votre _ ?",
+	"주소":"adresse",
+	"이메일 주소":"adresse email",
+	"집주소가":"adresse postale",
+	"기차표":"billet de train",
+	"샌드위치":"sandwich",
+
+	"비싸요":"être cher",
+	"싸요":"être pas cher",
+
+	"얼마예요?":"combien ça coûte ?",
 
 	"":""
 }]
