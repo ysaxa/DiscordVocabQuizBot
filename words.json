@@ -321,7 +321,7 @@
 	"송이":"classificateur pour les fleurs",
 	"결레":"classificateur pour les chaussures",
 
-	"모두":"au total",
+	"모두":"en tout, ensemble",
 	"몇":"COMBIEN?",
 
 	"나이":"âge",
@@ -336,6 +336,17 @@
 	"싸요":"être pas cher",
 
 	"얼마예요?":"combien ça coûte ?",
+
+	"":""
+}, {
+	"점원":"vendeur",
+	"손님":"client",
+	"어서 오세요": "bienvenue",
+	"요즘":"ces jours-ci",
+	"또오세요":"revenez encore",
+	"주세요":"donnez-moi s'il vous plait",
+	"안녕히 계세요":"au revoir (à quelqu'un qui reste)",
+	"합계":"total (somme)",
 
 	"":""
 }]
