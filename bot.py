@@ -65,7 +65,7 @@ scores: Scores = Scores()
 # View with buttons
 class Question(discord.ui.View):
 	def __init__(self):
-		super().__init__(timeout=3600.0)
+		super().__init__(timeout=14400.0)
 		self.msg: discord.Message
 
 		def simpleVocabulary():
