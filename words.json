@@ -321,7 +321,7 @@
 	"송이":"classificateur pour les fleurs",
 	"결레":"classificateur pour les chaussures",
 
-	"모두":"en tout, ensemble",
+	"모두":"tout, en tout, ensemble",
 	"몇":"COMBIEN?",
 
 	"나이":"âge",
@@ -356,6 +356,46 @@
 	"불고기 양념소스":"sauce d'assaisonnement de bulgogi",
 
 	"좋아하다":"aimer/apprécier",
+
+	"":""
+
+}, {
+	"음악":"musique",
+	"동사":"verbe",
+	"너무":"trop",
+	"맵다 (매워요)":"être pimenté",
+	"춥다 (추위요)":"avoir froid (ou il fait froid)",
+	"덥다 (더위요)":"avoir chaud (ou il fait chaud)",
+	"질문":"question",
+
+	"(불)규칙 동사":"verbe (ir)régulier",
+	"귀엽다 (귀여워요)":"être mignon",
+	"듣다 (들어요)":"écouter",
+	"걷다 (걸어요)":"marcher",
+	"케이 팝":"K-Pop",
+	"생선":"poisson",
+	"회":"cru",
+
+	"혼자":"seul",
+
+	"웹툰":"webtoon",
+	"TODO (재미있어요)":"être intéressant",
+	"TODO (만들어요)":"faire/fabriquer",
+	"다":"tout",
+	"그래요":"ah bon ? / ah oui ?",
+	"그런데":"cependant",
+	"빼다":"enlever",
+	"시키다":"commander",
+	"메뉴판":"carte du menu",
+
+	"고기 없이 주세요":"donnez moi sans viande",
+	"행복":"bonheur",
+	"음료수[음뇨수]":"boisson",
+	"최고":"le meilleur",
+	"양식집":"restaurant (maison) (de cuisine) occidental(e)",
+	"한식집":"restaurant (maison) (de cuisine) coréen(ne)",
+
+	"아주":"très",
 
 	"":""
 }]
