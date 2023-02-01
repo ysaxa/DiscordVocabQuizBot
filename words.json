@@ -398,4 +398,62 @@
 	"아주":"très",
 
 	"":""
+}, {
+	"파업":"grève",
+	"파업이 있어요":"avoir une grève",
+	"파업해요":"faire grève",
+	"N 때문에":"à cause de",
+
+	"날짜":"date",
+	"시간":"heure",
+
+	"달력":"calendrier",
+
+	"년":"année",
+	"월":"mois",
+	"일":"jour",
+
+	"(오늘이) 며칠이에요 ?":"quelle est la date ?",
+	"무슨 요일이에요 ?":"quel est le jour de la semaine ?",
+
+	"월요일[워료일]":"lundi",
+	"화요일":"mardi",
+	"수요일":"mercredi",
+	"목요일":"jeudi",
+	"금요일":"vendredi",
+	"토요일":"samedi",
+	"일요일":"dimanche",
+
+	"월말":"fin de mois",
+
+	"주(일)":"semaine",
+	"이번 주":"cette semaine",
+	"지난주":"la semaine dernière",
+	"다음 주":"la semaine prochaine",
+
+	"이번 주말":"le week end qui vient",
+	"지난주말":"le week end passé",
+	"다음주말":"le week end de la semaine prochaine",
+
+	"올해":"cette année",
+	"작년[장년]":"l'année dernière",
+	"내년":"l'année prochaine",
+
+	"이번 달":"ce mois",
+	"지난달":"le mois dernier",
+	"다음 달":"le mois prochain",
+
+	"오늘":"aujourdhui",
+	"어제":"hier",
+	"내일":"demain",
+
+	"언제":"quand",
+	"고향":"pays/ville natal(e)",
+
+	"오후":"dans l'après midi",
+	"오전":"dans la matinée",
+
+	"여행":"voyage",
+
+	"":""
 }]
