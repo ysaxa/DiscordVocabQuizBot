@@ -456,4 +456,28 @@
 	"여행":"voyage",
 
 	"":""
+}, {
+	"몇 년에 태어났어요 ?":"en quelle année êtes-vous né ?",
+	"무슨 띠예요 ?":"de quel signe astrologique êtes-vous ?",
+	"쥐띠":"rat (astro)",
+	"소띠":"vache (astro)",
+	"호랑이따":"tigre (astro)",
+	"토끼띠":"lapin (astro)",
+	"용띠":"dragon (astro)",
+	"뱀띠":"serpent (astro)",
+	"말띠":"cheval (astro)",
+	"양띠":"mouton (astro)",
+	"원숭이띠":"singe (astro)",
+	"닭띠":"coq (astro)",
+	"개띠":"chien (astro)",
+	"돼지띠":"cochon (astro)",
+
+	"시간":"l'heure",
+	"시":"classificateur heure",
+	"분":"classificateur minute",
+	"반":"et demi (pour l'heure)",
+	"전":"moins (pour l'heure)",
+	"몇 시예요 ?":"quelle heure est-il ?",
+
+	"":""
 }]
