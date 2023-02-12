@@ -452,6 +452,7 @@
 
 	"오후":"dans l'après midi",
 	"오전":"dans la matinée",
+	"밤":"dans la soirée",
 
 	"여행":"voyage",
 
@@ -478,6 +479,13 @@
 	"반":"et demi (pour l'heure)",
 	"전":"moins (pour l'heure)",
 	"몇 시예요 ?":"quelle heure est-il ?",
+
+	"출근하다":"aller au travail",
+	"퇴근하다":"sortir du travail",
+
+	"쯤":"environ",
+
+	"일어나다":"se lever, être debout",
 
 	"":""
 }]
