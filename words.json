@@ -500,5 +500,29 @@
 
 	"몰라요":"je ne sais pas",
 
+	"마지막":"dernier",
+
+
+	"도시":"ville",
+	"시골":"campagne",
+	"서점":"librairie (magasin de livres)",
+
+	"공연장":"salle de concert",
+	"대사관":"ambassade",
+	"백화점":"department store",
+	"약국":"pharmacie",
+	"편의점":"convenience store/épicerie",
+
+	"수영장":"piscine",
+
+	"낮잠을자다":"faire une sieste",
+	"농구":"basketball",
+	"비자":"visa",
+	"신청하다":"demander/s'inscrire/appliquer",
+	"자전거를 타다":"faire du vélo",
+	"집안일":"travaux ménagers",
+
+	"~하고 같이":"ensemble",
+
 	"":""
 }]
