@@ -1,6 +1,7 @@
 import os
 import re
 import json
+import yaml
 import discord # type: ignore
 import asyncio
 from threading import RLock
@@ -22,8 +23,8 @@ temp = os.getenv("QUESTION_DELAY_IN_SECONDS")
 assert temp is not None
 QUESTION_DELAY_IN_SECONDS: int = int(temp)
 
-with open('words.json', encoding="utf-8") as f:
-	words: list[dict] = json.load(f)
+with open('words.yaml', encoding="utf-8") as f:
+	words: list[dict] = yaml.safe_load(f)
 
 with open('questionsAndAnswers.json', encoding="utf-8") as f:
 	questionsAndAnswersBase: dict = json.load(f)
