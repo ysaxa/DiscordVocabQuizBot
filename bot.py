@@ -184,7 +184,7 @@ class Question(discord.ui.View):
 			return callback
 
 		for answer in answers:
-			button: discord.ui.Button = discord.ui.Button(label=answer, style=discord.ButtonStyle.blurple)
+			button: discord.ui.Button[discord.ui.View] = discord.ui.Button(label=answer, style=discord.ButtonStyle.blurple)
 			button.callback = getCallback(answer)
 			self.add_item(button)
 
@@ -197,6 +197,7 @@ class Question(discord.ui.View):
 
 class MyClient(discord.Client):
 	async def on_ready(self):
+		assert self.user is not None
 		print(f'Logged on as {self.user} ({self.user.id})')
 		self.channel = discord.utils.get(self.get_all_channels(), id=ENV.channelId)
 		if self.channel == None:
