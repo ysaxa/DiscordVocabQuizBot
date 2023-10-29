@@ -9,34 +9,46 @@ from threading import RLock
 from random import sample, shuffle, choice, choices, randint
 from datetime import datetime
 
+def notNone(data: dict[str, typing.Any], key: str):
+	assert key in data
+	ret = data[key]
+	return ret
+
 class Env:
 	def __init__(self, data: dict[str, typing.Any]):
-		def notNone(key: str):
-			assert key in data
-			ret = data[key]
-			return ret
+		self.token: str = notNone(data, 'TOKEN')
+		self.question_delay_in_seconds: int = notNone(data, 'QUESTION_DELAY_IN_SECONDS')
+		self.quizzes: list[Env.QuizDef] = [Env.QuizDef(quiz) for quiz in notNone(data, 'QUIZZES')]
 
-		self.token: str = notNone('TOKEN')
-		self.question_delay_in_seconds: int = notNone('QUESTION_DELAY_IN_SECONDS')
-		self.channelId: str = notNone('CHANNEL')
+	class QuizDef:
+		channel: discord.TextChannel # set after the client starts
+
+		def __init__(self, data: dict[str, typing.Any]):
+			self.words: list[dict[str, str]] = self.loadWords(notNone(data, 'WORDS'))
+			self.questions, self.substitutions = self.loadQuestions(notNone(data, 'QUESTIONS'))
+			self.channelId: str = notNone(data, 'CHANNEL')
+
+		@staticmethod
+		def loadWords(filename: str) -> list[dict[str, str]]:
+			with open(filename, encoding="utf-8") as f:
+				words: list[dict[str, str]] = [{
+					key: str(value)
+					for key, value in wordDict.items()
+				} for wordDict in yaml.safe_load(f)]
+
+				return words
+
+		@staticmethod
+		def loadQuestions(filename: str) -> tuple[dict[str, str], dict[str, list[str]]]:
+			with open(filename, encoding="utf-8") as f:
+				questionsAndAnswersBase: dict[str, typing.Any] = json.load(f)
+				questionsAndAnswers: dict[str, str] = notNone(questionsAndAnswersBase, "questions")
+				substitutions: dict[str, list[str]] = notNone(questionsAndAnswersBase, "substitutions")
+				return questionsAndAnswers, substitutions
+
 
 with open('.env.yaml', encoding="utf-8") as f:
 	ENV: Env = Env(yaml.safe_load(f))
-
-with open('words.yaml', encoding="utf-8") as f:
-	words: list[dict[str, str]] = [{
-		key: str(value)
-		for key, value in wordDict.items()
-	} for wordDict in yaml.safe_load(f)]
-
-with open('questionsAndAnswers.json', encoding="utf-8") as f:
-	questionsAndAnswersBase = json.load(f)
-	questionsAndAnswers: dict[str, str] = questionsAndAnswersBase["questions"]
-	assert questionsAndAnswers is not None
-	del questionsAndAnswers[""]
-	substitutions: dict[str, list[str]] = questionsAndAnswersBase["substitutions"]
-	assert substitutions is not None
-	del substitutions[""]
 
 # stupid json file for now
 class Scores:
@@ -68,7 +80,7 @@ questionDataType = tuple[str, str, list[str], int] # what is necessary to post a
 
 # View with buttons
 class Question(discord.ui.View):
-	def __init__(self):
+	def __init__(self, words: list[dict[str, str]], questionsAndAnswers: dict[str, str], substitutions: dict[str, list[str]]):
 		super().__init__(timeout=14400.0)
 		self.msg: discord.Message
 
@@ -198,33 +210,42 @@ class Question(discord.ui.View):
 class MyClient(discord.Client):
 	async def on_ready(self):
 		assert self.user is not None
-		print(f'Logged on as {self.user} ({self.user.id})')
-		self.channel = discord.utils.get(self.get_all_channels(), id=ENV.channelId)
-		if self.channel == None:
-			print(f"could not find channel from id {ENV.channelId}")
-			return
-		print(f'Will send questions in channel {self.channel.name}')
+		user: discord.ClientUser = self.user
 
-		await self.channel.send(embed=discord.Embed(title="ATTENTION", description="⚠ Bot redéployé, les questions précédentes sont invalides.", color=0xFF0000))
+		for quizDef in ENV.quizzes:
+			print(f'Logged on as {self.user} ({user.id})')
+			channel = discord.utils.get(list(self.get_all_channels()), id=quizDef.channelId)
+			if channel is None or not isinstance(channel, discord.TextChannel) :
+				print(f"invalid channel id {quizDef.channelId}")
+				exit()
+
+			quizDef.channel = channel
+			print(f'Will send questions in channel {channel.name}')
+
+			await channel.send(embed=discord.Embed(title="ATTENTION", description="⚠ Bot redéployé, les questions précédentes sont invalides.", color=0xFF0000))
 
 		while True:
 			try:
-				await self.sendQuestion()
+				for quizDef in ENV.quizzes:
+					await self.sendQuestion(quizDef)
 				await asyncio.sleep(ENV.question_delay_in_seconds)
 			except:
 				pass
 
-	async def on_message_DISABLED(self, message: discord.Message):
+	"""
+	async def on_message_DISABLED(self, message: discord.Message) -> None:
 		assert message.author is not None
 		assert self.user is not None
 		if message.author.id == self.user.id: return
 
 		if True: # choice(range(5)) == 0:
 			await self.sendQuestion()
+	"""
 
-	async def sendQuestion(self):
-		question = Question()
-		msg: discord.Message = await self.channel.send(embed=question.embed, view=question)
+	@staticmethod
+	async def sendQuestion(quizDef: Env.QuizDef) -> None:
+		question = Question(quizDef.words, quizDef.questions, quizDef.substitutions)
+		msg: discord.Message = await quizDef.channel.send(embed=question.embed, view=question)
 		await msg.add_reaction('✅')
 		question.msg = msg
 
