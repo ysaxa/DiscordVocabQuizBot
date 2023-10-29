@@ -4,24 +4,24 @@ import json
 import yaml
 import discord # type: ignore
 import asyncio
+import typing
 from threading import RLock
 from random import sample, shuffle, choice, choices, randint
-from dotenv import load_dotenv
 from datetime import datetime
 
-load_dotenv()
+class Env:
+	def __init__(self, data: dict[str, typing.Any]):
+		def notNone(key: str):
+			assert key in data
+			ret = data[key]
+			return ret
 
-temp = os.getenv("TOKEN")
-assert temp is not None
-TOKEN: str = temp
+		self.token: str = notNone('TOKEN')
+		self.question_delay_in_seconds: int = notNone('QUESTION_DELAY_IN_SECONDS')
+		self.channelId: str = notNone('CHANNEL')
 
-temp = os.getenv("CHANNEL")
-assert temp is not None
-CHANNELID: int = int(temp)
-
-temp = os.getenv("QUESTION_DELAY_IN_SECONDS")
-assert temp is not None
-QUESTION_DELAY_IN_SECONDS: int = int(temp)
+with open('.env.yaml', encoding="utf-8") as f:
+	ENV: Env = Env(yaml.safe_load(f))
 
 with open('words.yaml', encoding="utf-8") as f:
 	words: list[dict[str, str]] = [{
@@ -198,9 +198,9 @@ class Question(discord.ui.View):
 class MyClient(discord.Client):
 	async def on_ready(self):
 		print(f'Logged on as {self.user} ({self.user.id})')
-		self.channel = discord.utils.get(self.get_all_channels(), id=CHANNELID)
+		self.channel = discord.utils.get(self.get_all_channels(), id=ENV.channelId)
 		if self.channel == None:
-			print(f"could not find channel from id {CHANNELID}")
+			print(f"could not find channel from id {ENV.channelId}")
 			return
 		print(f'Will send questions in channel {self.channel.name}')
 
@@ -209,7 +209,7 @@ class MyClient(discord.Client):
 		while True:
 			try:
 				await self.sendQuestion()
-				await asyncio.sleep(QUESTION_DELAY_IN_SECONDS)
+				await asyncio.sleep(ENV.question_delay_in_seconds)
 			except:
 				pass
 
@@ -230,4 +230,4 @@ class MyClient(discord.Client):
 intents = discord.Intents.default()
 
 client = MyClient(intents=intents)
-client.run(TOKEN)
+client.run(ENV.token)
