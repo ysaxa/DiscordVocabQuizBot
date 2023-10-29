@@ -24,14 +24,14 @@ assert temp is not None
 QUESTION_DELAY_IN_SECONDS: int = int(temp)
 
 with open('words.yaml', encoding="utf-8") as f:
-	words: list[dict] = yaml.safe_load(f)
+	words: list[dict[str, str]] = yaml.safe_load(f)
 
 with open('questionsAndAnswers.json', encoding="utf-8") as f:
-	questionsAndAnswersBase: dict = json.load(f)
-	questionsAndAnswers: dict = questionsAndAnswersBase["questions"]
+	questionsAndAnswersBase = json.load(f)
+	questionsAndAnswers: dict[str, str] = questionsAndAnswersBase["questions"]
 	assert questionsAndAnswers is not None
 	del questionsAndAnswers[""]
-	substitutions: dict = questionsAndAnswersBase["substitutions"]
+	substitutions: dict[str, list[str]] = questionsAndAnswersBase["substitutions"]
 	assert substitutions is not None
 	del substitutions[""]
 
@@ -41,9 +41,7 @@ class Scores:
 		self.scorepath: str = "appdata/scores.json"
 		self.scoresLock: RLock = RLock()
 
-	def add(self, userIdInt: int, points: int) -> int:
-		userId: str = str(userIdInt)
-
+	def add(self, userId: str, points: int) -> int:
 		with self.scoresLock:
 			data = self.readData()
 			score = 0 if userId not in data else data[userId]
@@ -52,10 +50,10 @@ class Scores:
 				json.dump(data, f)
 			return data[userId]
 
-	def readData(self) -> dict:
+	def readData(self) -> dict[str, int]:
 		if os.path.exists(self.scorepath):
 			with open(self.scorepath, encoding="utf-8") as f:
-				data: dict = json.load(f)
+				data: dict[str, int] = json.load(f)
 		else:
 			data = {}
 
@@ -63,14 +61,16 @@ class Scores:
 
 scores: Scores = Scores()
 
+questionDataType = tuple[str, str, list[str], int] # what is necessary to post a question
+
 # View with buttons
 class Question(discord.ui.View):
 	def __init__(self):
 		super().__init__(timeout=14400.0)
 		self.msg: discord.Message
 
-		def simpleVocabulary():
-			wordgroup: dict = choices(words, weights=[i+1 for i in range(len(words))])[0]
+		def simpleVocabulary() -> questionDataType:
+			wordgroup: dict[str, str] = choices(words, weights=[i+1 for i in range(len(words))])[0]
 			if "" in wordgroup: del wordgroup[""]
 			pick: list[str] = sample([*wordgroup.keys()], 4)
 			answers: list[str] = [wordgroup[key] for key in pick]
@@ -78,15 +78,15 @@ class Question(discord.ui.View):
 				pick, answers = answers, pick
 			return "Traduction de vocabulaire simple", pick[0], answers, 0x00FF00
 
-		def numbers():
-			values: list[int] = [randint(0,9) for i in range(8)]
+		def numbers() -> questionDataType:
+			values: list[int] = [randint(0,9) for _ in range(8)]
 			values.insert(0, randint(6,7))
 			values.insert(0, 0)
 			sinokorean: str = "공일이삼사오육칠팔구십"
 			answer: list[str] = [sinokorean[i] for i in values]
 
 			index: int = randint(2,10)
-			replacements: list[int] = sample([c for c in sinokorean if c != answer[index]], 3)
+			replacements: list[str] = sample([c for c in sinokorean if c != answer[index]], 3)
 
 			answers = [answer.copy(), answer.copy(), answer.copy()]
 			for i in range(len(answers)):
@@ -96,13 +96,13 @@ class Question(discord.ui.View):
 
 			return "Traduction de numéro de téléphone", ''.join([str(i) for i in values]), [''.join(a) for a in answers], 0xFFFF00
 
-		def coherentAnswer():
+		def coherentAnswer() -> questionDataType:
 			pick: list[str] = sample([*questionsAndAnswers.keys()], 4)
 			prompt: str = pick[0]
 			answers: list[str] = [questionsAndAnswers[key] for key in pick]
 
 			def substitute(strings: list[str]):
-				variableDict: dict = {
+				variableDict: dict[str, list[str]] = {
 					key: list(set(re.findall(f"{{{key}[0-9]*}}", ''.join(strings))))
 					for key in substitutions.keys()
 				}
@@ -153,11 +153,11 @@ class Question(discord.ui.View):
 
 		# points people can earn from this question (decreases every wrong answer)
 		triesLock: RLock = RLock()
-		tries: dict = {}
+		tries: dict[str, int] = {}
 
 		def getCallback(localAnswer: str):
 			async def callback(interaction: discord.Interaction):
-				userId: int = interaction.user.id
+				userId: str = str(interaction.user.id)
 
 				with triesLock:
 					if userId not in tries: tries[userId] = 0
@@ -168,7 +168,7 @@ class Question(discord.ui.View):
 					await interaction.response.send_message(f'Tu as déjà répondu.', ephemeral=True)
 				elif localAnswer == self.realAnswer:
 					points: int = max(0, 5-userTries)
-					total:int = scores.add(userId, points)
+					total: int = scores.add(userId, points)
 					with triesLock:
 						tries[userId] = 100 # magic
 					await interaction.response.send_message('\n'.join([
@@ -196,6 +196,9 @@ class MyClient(discord.Client):
 	async def on_ready(self):
 		print(f'Logged on as {self.user} ({self.user.id})')
 		self.channel = discord.utils.get(self.get_all_channels(), id=CHANNELID)
+		if self.channel == None:
+			print(f"could not find channel from id {CHANNELID}")
+			return
 		print(f'Will send questions in channel {self.channel.name}')
 
 		await self.channel.send(embed=discord.Embed(title="ATTENTION", description="⚠ Bot redéployé, les questions précédentes sont invalides.", color=0xFF0000))
