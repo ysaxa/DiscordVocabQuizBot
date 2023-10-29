@@ -24,7 +24,10 @@ assert temp is not None
 QUESTION_DELAY_IN_SECONDS: int = int(temp)
 
 with open('words.yaml', encoding="utf-8") as f:
-	words: list[dict[str, str]] = yaml.safe_load(f)
+	words: list[dict[str, str]] = [{
+		key: str(value)
+		for key, value in wordDict.items()
+	} for wordDict in yaml.safe_load(f)]
 
 with open('questionsAndAnswers.json', encoding="utf-8") as f:
 	questionsAndAnswersBase = json.load(f)
