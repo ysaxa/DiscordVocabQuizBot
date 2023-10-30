@@ -41,7 +41,7 @@ class Env:
 		@staticmethod
 		def loadQuestions(filename: str) -> tuple[dict[str, str], dict[str, list[str]]]:
 			with open(filename, encoding="utf-8") as f:
-				questionsAndAnswersBase: dict[str, typing.Any] = json.load(f)
+				questionsAndAnswersBase: dict[str, typing.Any] = yaml.safe_load(f)
 				questionsAndAnswers: dict[str, str] = notNone(questionsAndAnswersBase, "questions")
 				substitutions: dict[str, list[str]] = notNone(questionsAndAnswersBase, "substitutions")
 				return questionsAndAnswers, substitutions
@@ -118,7 +118,7 @@ class Question(discord.ui.View):
 
 			def substitute(strings: list[str]):
 				variableDict: dict[str, list[str]] = {
-					key: list(set(re.findall(f"{{{key}[0-9]*}}", ''.join(strings))))
+					key: list(set(re.findall(f"~{key}[0-9]*~", ''.join(strings))))
 					for key in substitutions.keys()
 				}
 
@@ -132,9 +132,9 @@ class Question(discord.ui.View):
 						for j,__ in enumerate(subs):
 							strings[i] = strings[i].replace(variables[j], subs[j])
 
-				# replace {이에요} with 예요/이에요 according to rule
+				# replace 이에요 with 예요/이에요 according to rule
 				def replace이에요(s:str):
-					occurrences: list[str] = re.findall(f'.{{이에요}}', s)
+					occurrences: list[str] = re.findall('.이에요', s)
 					for occurrence in occurrences:
 						print(occurrence)
 						ch = occurrence[0]
